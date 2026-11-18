@@ -19,26 +19,38 @@ const MENU: MenuItem[] = [
 
 export default function FilterableList() {
   // TODO 1: Add a `query` state with useState("").
+  const [query, setQuery] = useState("");
 
   // TODO 3: Build a `visible` array — keep only items whose `name`
   //         includes the query (case-insensitive).
+  const visible = MENU.filter((item) =>
+    item.name.toLowerCase().includes(query.trim().toLowerCase())
+  );
 
   return (
     <div className="list">
       {/* TODO 2: Make this a controlled input.
           Give it value={query} and an onChange that updates the state. */}
-      <input placeholder="Search the menu..." />
+      <input
+        type="text"
+        placeholder="Search the menu..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+      />
 
       {/* TODO 5: Empty state — when nothing matches, show a friendly
           message instead of the list (decide off the FILTERED array). */}
-
-      <ul>
-        {/* TODO 4: Render the filtered array with .map(),
-            giving each <li> a key={item.id} (never the index). */}
-        {MENU.map((item) => (
-          <li key={item.id}>{item.name}</li>
-        ))}
-      </ul>
+      {visible.length === 0 ? (
+        <p>No menu items match &ldquo;{query}&rdquo;.</p>
+      ) : (
+        <ul>
+          {/* TODO 4: Render the filtered array with .map(),
+              giving each <li> a key={item.id} (never the index). */}
+          {visible.map((item) => (
+            <li key={item.id}>{item.name}</li>
+          ))}
+        </ul>
+      )}
     </div>
   );
 }
